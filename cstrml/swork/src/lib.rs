@@ -287,10 +287,10 @@ decl_module! {
             ensure!(Self::work_report_timing_check(block_number, &block_hash).is_ok(), Error::<T>::InvalidReportTime);
 
             // 6. Do sig check
-            ensure!(
-                Self::work_report_sig_check(&pub_key, block_number, &block_hash, reserved, &files, &sig),
-                Error::<T>::IllegalWorkReportSig
-            );
+            // ensure!(
+            //     Self::work_report_sig_check(&pub_key, block_number, &block_hash, reserved, &files, &sig),
+            //     Error::<T>::IllegalWorkReportSig
+            // );
 
             // 7. Construct work report
             let work_report = Self::merged_work_report(&who, reserved, &files, block_number, is_elder_report, is_current_report);
