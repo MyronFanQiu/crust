@@ -69,6 +69,7 @@ swork = { package = 'cstrml-swork', path = '../cstrml/swork', default-features =
 staking = { package = 'cstrml-staking', path = '../cstrml/staking', default-features = false }
 market = { package = 'cstrml-market', path = '../cstrml/market', default-features = false }
 payment = { package = 'cstrml-payment', path = '../cstrml/payment', default-features = false }
+payment-benchmarking = { package = 'cstrml-payment-benchmarking', path = '../cstrml/payment/benchmarking', default-features = false }
 primitives = { package = 'cst-primitives', path = '../primitives', default-features = false }
 balances = { default-features = false, package = 'cstrml-balances', path = '../cstrml/balances' }
 
@@ -118,6 +119,7 @@ std = [
     'staking/std',
     'market/std',
     'payment/std',
+    'payment-benchmarking/std',
     'primitives/std',
     'pallet-transaction-payment-rpc-runtime-api/std'
 ]
@@ -132,4 +134,5 @@ runtime-benchmarks = [
     "staking/runtime-benchmarks",
     "market/runtime-benchmarks",
     "swork/runtime-benchmarks",
+    "payment-benchmarking/runtime-benchmarks"
 ]

@@ -1,5 +1,5 @@
 [package]
-name = "cstrml-payment"
+name = "cstrml-payment-benchmarking"
 version = "0.8.1"
 authors = ["crustio"]
 edition = "2018"
@@ -23,10 +23,14 @@ sp-io = { default-features = false, version = '2.0.0-rc6' }
 sp-runtime = { default-features = false, version = '2.0.0-rc6' }
 sp-std = { default-features = false, version = '2.0.0-rc6' }
 
+frame-benchmarking = { version = '2.0.0-rc6', default-features = false}
+
 # crust runtime modules
-primitives = { package = 'cst-primitives', path = '../../primitives', default-features = false }
-market = { package = 'cstrml-market', path = '../market', default-features = false }
-balances = { default-features = false, package = 'cstrml-balances', path = '../balances' }
+primitives = { package = 'cst-primitives', path = '../../../primitives', default-features = false }
+payment = { package = 'cstrml-payment', path = '../../payment', default-features = false }
+market = { package = 'cstrml-market', path = '../../market', default-features = false }
+swork = { package = "cstrml-swork", path = "../../swork", default-features = false }
+balances = { default-features = false, package = 'cstrml-balances', path = '../../balances' }
 
 [features]
 default = ['std']
@@ -40,10 +44,11 @@ std = [
     'sp-std/std',
     'frame-system/std',
     'primitives/std',
-    'market/std',
-    'balances/std'
+    'frame-benchmarking/std',
 ]
 runtime-benchmarks = [
+    'payment/runtime-benchmarks',
+    'swork/runtime-benchmarks',
     'market/runtime-benchmarks',
     'balances/runtime-benchmarks',
 ]
@@ -51,5 +56,3 @@ runtime-benchmarks = [
 [dev-dependencies]
 hex = '0.4.2'
 keyring = { package = "sp-keyring", version = '2.0.0-rc6' }
-swork = { package = 'cstrml-swork', path = '../swork' }
-balances = { package = 'cstrml-balances', path = '../balances' }

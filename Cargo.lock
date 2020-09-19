@@ -988,6 +988,7 @@ dependencies = [
  "cstrml-balances",
  "cstrml-market",
  "cstrml-payment",
+ "cstrml-payment-benchmarking",
  "cstrml-staking",
  "cstrml-swork",
  "frame-benchmarking",
@@ -1113,6 +1114,29 @@ dependencies = [
  "cstrml-balances",
  "cstrml-market",
  "cstrml-swork",
+ "frame-support",
+ "frame-system",
+ "hex",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-keyring",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "cstrml-payment-benchmarking"
+version = "0.8.1"
+dependencies = [
+ "cst-primitives",
+ "cstrml-balances",
+ "cstrml-market",
+ "cstrml-payment",
+ "cstrml-swork",
+ "frame-benchmarking",
  "frame-support",
  "frame-system",
  "hex",

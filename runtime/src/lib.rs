@@ -827,8 +827,10 @@ impl_runtime_apis! {
             // To get around that, we separated the Session benchmarks into its own crate, which is why
             // we need these two lines below.
             use frame_system_benchmarking::Module as SystemBench;
+            use payment_benchmarking::Module as PaymentBench;
 
             impl frame_system_benchmarking::Trait for Runtime {}
+            impl payment_benchmarking::Trait for Runtime {}
             let whitelist: Vec<TrackedStorageKey> = vec![];
             let mut batches = Vec::<BenchmarkBatch>::new();
 			let params = (&pallet, &benchmark, &lowest_range_values, &highest_range_values, &steps, repeat, &whitelist, extra);
@@ -837,6 +839,7 @@ impl_runtime_apis! {
             add_benchmark!(params, batches, staking, Staking);
             add_benchmark!(params, batches, market, Market);
             add_benchmark!(params, batches, swork, Swork);
+            add_benchmark!(params, batches, payment, PaymentBench::<Runtime>);
 
             if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
             Ok(batches)

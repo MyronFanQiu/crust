@@ -393,7 +393,7 @@ impl<T: Trait> Module<T> {
     /// 0. Do nothing if `current_id` == `id`
     /// 1. Update `current_id` if `current_id.code` == `id.code`
     /// 2. Update `current_id` and `elder_id` if `current_id.code` != `id.code`
-    fn maybe_upsert_id(who: &T::AccountId, id: &Identity) -> bool {
+    pub fn maybe_upsert_id(who: &T::AccountId, id: &Identity) -> bool {
         let upserted = match Self::identities(who) {
             // New id
             (_, None) => {
