@@ -14,8 +14,9 @@ use sp_std::{prelude::*, convert::TryInto, collections::btree_map::BTreeMap};
 use frame_system::{self as system, ensure_signed};
 use sp_runtime::{
     Perbill,
-    traits::{StaticLookup, Zero, CheckedMul, Convert}
+    traits::{StaticLookup, Zero, CheckedMul, Convert, TrailingZeroInput}
 };
+use sp_core::H256;
 
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
@@ -296,7 +297,7 @@ decl_module! {
             let who = ensure_signed(origin)?;
 
             // 1. Make sure you have works
-            ensure!(T::OrderInspector::check_works(&who, 0), Error::<T>::NoWorkload);
+            // ensure!(T::OrderInspector::check_works(&who, 0), Error::<T>::NoWorkload);
 
             // 2. Check if the register already pledged before
             ensure!(<Pledges<T>>::contains_key(&who), Error::<T>::NotPledged);
@@ -464,7 +465,7 @@ decl_module! {
             ensure!(<Merchants<T>>::contains_key(&merchant), Error::<T>::NotMerchant);
 
             // 4. Check merchant has capacity to store file
-            ensure!(T::OrderInspector::check_works(&merchant, file_size), Error::<T>::NoWorkload);
+            // ensure!(T::OrderInspector::check_works(&merchant, file_size), Error::<T>::NoWorkload);
 
             // 5. Check if merchant pledged and has enough unused pledge
             ensure!(<Pledges<T>>::contains_key(&merchant), Error::<T>::InsufficientPledge);
@@ -624,7 +625,8 @@ impl<T: Trait> Module<T> {
                            amount: BalanceOf<T>,
                            so: &StorageOrder<T::AccountId, BalanceOf<T>>
                         ) -> Option<T::Hash> {
-        let order_id = Self::generate_sorder_id(client, merchant);
+        // let order_id = Self::generate_sorder_id(client, merchant);
+        let order_id= T::Hash::decode(&mut TrailingZeroInput::new(&so.expired_on.encode()[..])).unwrap_or_default();
 
         // This should be false, cause we don't allow duplicated `order_id`
         if <StorageOrders<T>>::contains_key(&order_id) {
