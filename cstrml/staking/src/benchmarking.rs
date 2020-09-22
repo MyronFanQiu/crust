@@ -73,7 +73,7 @@ pub fn create_validators_with_guarantors_for_era<T: Trait>(v: u32, n: u32, m: u3
 
     // Have them randomly validate
     let available_validators = validators.clone();
-    for _ in 0 .. m {
+    for _ in 1 .. m {
         let selected = rng.next_u32() as usize % available_validators.len();
         let validator = available_validators.get(selected).unwrap();
         Staking::<T>::guarantee(RawOrigin::Signed(n_controller.clone()).into(), (validator.clone(), T::Currency::minimum_balance() * 10.into()))?;
@@ -85,7 +85,7 @@ pub fn create_validators_with_guarantors_for_era<T: Trait>(v: u32, n: u32, m: u3
 
         // Have them randomly validate
         let available_validators = validators.clone();
-        for _ in 0 .. m {
+        for _ in 1 .. m {
             let selected = rng.next_u32() as usize % available_validators.len();
             let validator = available_validators.get(selected).unwrap();
             Staking::<T>::guarantee(RawOrigin::Signed(n_controller.clone()).into(), (validator.clone(), T::Currency::minimum_balance() * 10.into()))?;
@@ -154,8 +154,8 @@ benchmarks! {
 
 
     guarantee {
-        let v in 1 .. 2;
-        let n in 1 .. 2;
+        let v in 1 .. 3;
+        let n in 1 .. 5;
         let m in 1 .. MAX_GUARANTEE.try_into().unwrap();
         MinimumValidatorCount::put(1);
         let (g_controller, v_lookup) = create_validators_with_guarantors_for_era::<T>(10u32.pow(v), 10u32.pow(n), m)?;
@@ -163,8 +163,8 @@ benchmarks! {
 
 
     cut_guarantee {
-        let v in 1 .. 2;
-        let n in 1 .. 2;
+        let v in 1 .. 3;
+        let n in 1 .. 5;
         let m in 1 .. MAX_GUARANTEE.try_into().unwrap();
         MinimumValidatorCount::put(1);
         let (g_controller, v_lookup) = create_validators_with_guarantors_for_era::<T>(10u32.pow(v), 10u32.pow(n), m)?;
@@ -174,8 +174,8 @@ benchmarks! {
 
 
     new_era {
-        let v in 1 .. 2;
-        let n in 1 .. 2;
+        let v in 1 .. 3;
+        let n in 1 .. 5;
         let m in 1 .. MAX_GUARANTEE.try_into().unwrap();
         MinimumValidatorCount::put(1);
         create_validators_with_guarantors_for_era::<T>(10u32.pow(v), 10u32.pow(n), m)?;
@@ -185,8 +185,8 @@ benchmarks! {
     }
 
     select_and_update_validators {
-        let v in 1 .. 2;
-        let n in 1 .. 2;
+        let v in 1 .. 3;
+        let n in 1 .. 5;
         let m in 1 .. MAX_GUARANTEE.try_into().unwrap();
         MinimumValidatorCount::put(1);
         create_validators_with_guarantors_for_era::<T>(10u32.pow(v), 10u32.pow(n), m)?;
