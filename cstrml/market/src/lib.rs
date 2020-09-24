@@ -498,7 +498,7 @@ decl_module! {
             };
 
             // 10. Pay the order and (maybe) add storage order
-            if let Some(order_id) = Self::maybe_insert_sorder(&who, &merchant, amount.clone(), &storage_order) {
+            if let Some(order_id) = Self::maybe_insert_sorder(&who, &merchant, amount.clone(), &storage_order, &file_alias) {
                 // a. update pledge
                 <Pledges<T>>::mutate(&merchant, |pledge| {
                         pledge.used += amount;
@@ -623,10 +623,10 @@ impl<T: Trait> Module<T> {
     fn maybe_insert_sorder(client: &T::AccountId,
                            merchant: &T::AccountId,
                            amount: BalanceOf<T>,
-                           so: &StorageOrder<T::AccountId, BalanceOf<T>>
+                           so: &StorageOrder<T::AccountId, BalanceOf<T>>,
+                           file_alias: &FileAlias,
                         ) -> Option<T::Hash> {
-        // let order_id = Self::generate_sorder_id(client, merchant);
-        let order_id= T::Hash::decode(&mut TrailingZeroInput::new(&so.expired_on.encode()[..])).unwrap_or_default();
+        let order_id = Self::generate_sorder_id(client, merchant, file_alias);
 
         // This should be false, cause we don't allow duplicated `order_id`
         if <StorageOrders<T>>::contains_key(&order_id) {
@@ -730,19 +730,20 @@ impl<T: Trait> Module<T> {
 
     // IMMUTABLE PRIVATE
     // Generate the storage order id by using the on-chain randomness
-    fn generate_sorder_id(client: &T::AccountId, merchant: &T::AccountId) -> T::Hash {
+    fn generate_sorder_id(client: &T::AccountId, merchant: &T::AccountId, file_alias: &FileAlias) -> T::Hash {
         // 1. Construct random seed, 👼 bless the randomness
         // seed = [ block_hash, client_account, merchant_account ]
         let bn = <system::Module<T>>::block_number();
         let bh: T::Hash = <system::Module<T>>::block_hash(bn);
         let seed = [
-            &bh.as_ref()[..],
+            &file_alias.encode()[..],
             &client.encode()[..],
             &merchant.encode()[..],
         ].concat();
-
+        
         // 2. It can cover most cases, for the "real" random
-        T::Randomness::random(seed.as_slice())
+        T::Hash::decode(&mut TrailingZeroInput::new(&seed[..])).unwrap_or_default()
+        // T::Randomness::random(seed.as_slice())
     }
 
     // Calculate storage order's amount
