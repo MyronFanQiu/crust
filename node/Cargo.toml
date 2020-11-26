@@ -20,7 +20,7 @@ hex-literal = "0.2.1"
 
 # substrate client dependencies
 babe = { version = '0.8.0-rc5', package = 'sc-consensus-babe' }
-grandpa = { version = "0.8.0-rc5", package = "sc-finality-grandpa" }
+grandpa = { version = "0.8.0-rc5", path = '../utils/finality-grandpa', package = 'sc-finality-grandpa' }
 sc-basic-authorship = '0.8.0-rc5'
 authority-discovery = { version = '0.8.0-rc5', package= 'sc-authority-discovery' }
 sc-client-api = '2.0.0-rc5'
