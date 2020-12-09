@@ -98,7 +98,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("crust"),
     impl_name: create_runtime_str!("crustio-crust"),
     authoring_version: 1,
-    spec_version: 1,
+    spec_version: 2,
     impl_version: 1,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1
@@ -378,7 +378,7 @@ impl pallet_session::historical::Trait for Runtime {
 
 parameter_types! {
     // 3 sessions in an era (30 mins).
-    pub const SessionsPerEra: SessionIndex = 3;
+    pub const SessionsPerEra: SessionIndex = 36;
     // 28 eras for unbonding (14 hours).
     pub const BondingDuration: staking::EraIndex = 28;
     // 28 eras in which slashes can be cancelled (14 hours).

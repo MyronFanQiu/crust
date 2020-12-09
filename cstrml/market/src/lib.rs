@@ -464,7 +464,7 @@ decl_module! {
             Ok(())
         }
 
-                /// Place a storage order
+        /// Place a storage order
         /// TODO: Reconsider this weight
         #[weight = 1000]
         pub fn get_file(
