@@ -15,7 +15,6 @@ use sp_inherents::InherentDataProviders;
 use sc_consensus::LongestChain;
 
 // Our native executor instance.
-// TODO: Bring benchmarks back
 native_executor_instance!(
     pub CrustExecutor,
     crust_runtime::api::dispatch,
